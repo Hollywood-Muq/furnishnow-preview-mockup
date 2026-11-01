@@ -1795,6 +1795,7 @@ window.FURNISH_PRODUCTS = [
     "title": "Dining Table Slate - 180x80",
     "price": "8,900.00",
     "orig_price": "12,900.00",
+    "discount_tag": "31% OFF",
     "is_promo": false,
     "is_featured": false,
     "category": "Dining Table",

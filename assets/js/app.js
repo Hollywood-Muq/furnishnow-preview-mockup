@@ -55,8 +55,14 @@ function renderCarousels() {
 
 function createCarouselCard(p, isSale) {
   const hasDiscount = p.orig_price && p.orig_price !== p.price;
+  let tagText = p.discount_tag;
+  if (!tagText && hasDiscount) {
+    const op = parseFloat(String(p.orig_price).replace(/,/g, ''));
+    const np = parseFloat(String(p.price).replace(/,/g, ''));
+    tagText = (op > np) ? `${Math.round(((op - np) / op) * 100)}% OFF` : 'SALE';
+  }
   const badgeHtml = hasDiscount 
-    ? `<span class="badge-discount-tag">${p.discount_tag || 'SALE'}</span>` 
+    ? `<span class="badge-discount-tag">${tagText}</span>` 
     : '';
   const strikeHtml = hasDiscount 
     ? `<span class="price-strike">Rs ${p.orig_price}</span>` 
