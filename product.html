@@ -311,6 +311,7 @@
         <!-- Left: Product Image with Hover & Click Zoom -->
         <div class="col-lg-6">
           <div class="product-gallery-box" onclick="openLightbox()" title="Click to open full zoom">
+            <span class="shop-badge-promo" id="gallery-discount-badge" style="display:none;"></span>
             <img id="detail-main-img" src="" alt="Product Photo" class="product-main-img">
             <span class="zoom-hint-badge"><i class="bi bi-zoom-in me-1"></i>Hover to inspect / Click to enlarge</span>
           </div>
@@ -324,9 +325,10 @@
             <div class="product-sku-tag"><i class="bi bi-tag me-1"></i> <span id="detail-sku">Ref: FN-0001</span></div>
 
             <!-- Price Row -->
-            <div class="product-pricing-box">
+            <div class="product-pricing-box d-flex align-items-center flex-wrap gap-2">
               <span class="product-current-price" id="detail-price">0.00 Rs</span>
               <span class="product-orig-price" id="detail-orig-price" style="display:none;"></span>
+              <span class="shop-badge-promo" id="detail-discount-tag" style="position:static; display:none;"></span>
               <span class="vat-tag">VAT Included</span>
             </div>
 
@@ -457,6 +459,25 @@
           const origEl = document.getElementById('detail-orig-price');
           origEl.textContent = `${currentProduct.orig_price} Rs`;
           origEl.style.display = 'inline';
+
+          let tag = currentProduct.discount_tag;
+          if (!tag) {
+            const op = parseFloat(String(currentProduct.orig_price).replace(/,/g, ''));
+            const np = parseFloat(String(currentProduct.price).replace(/,/g, ''));
+            tag = (op > np) ? `${Math.round(((op - np) / op) * 100)}% OFF` : 'SALE';
+          }
+
+          const badgeEl = document.getElementById('detail-discount-tag');
+          if (badgeEl) {
+            badgeEl.textContent = tag;
+            badgeEl.style.display = 'inline-flex';
+          }
+
+          const galleryBadge = document.getElementById('gallery-discount-badge');
+          if (galleryBadge) {
+            galleryBadge.textContent = tag;
+            galleryBadge.style.display = 'inline-flex';
+          }
         }
 
         // Render Sizes Selector if available

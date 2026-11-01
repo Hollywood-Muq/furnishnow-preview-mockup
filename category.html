@@ -235,11 +235,20 @@
       top: 10px;
       left: 10px;
       background: #ef4444;
-      color: white;
+      color: #ffffff;
       font-size: 0.72rem;
       font-weight: 700;
-      padding: 3px 8px;
+      letter-spacing: 0.02em;
+      padding: 4px 8px;
       border-radius: 6px;
+      line-height: 1;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      box-shadow: 0 2px 4px rgba(239, 68, 68, 0.25);
+      pointer-events: none;
     }
     .shop-card-body {
       padding: 16px;
@@ -827,7 +836,13 @@
 
       container.innerHTML = items.map(p => {
         const hasDiscount = p.orig_price && p.orig_price !== p.price;
-        const discountTag = hasDiscount ? `<span class="shop-badge-promo">${p.discount_tag || 'PROMO'}</span>` : '';
+        let tagText = p.discount_tag;
+        if (!tagText && hasDiscount) {
+          const op = parseFloat(String(p.orig_price).replace(/,/g, ''));
+          const np = parseFloat(String(p.price).replace(/,/g, ''));
+          tagText = (op > np) ? `${Math.round(((op - np) / op) * 100)}% OFF` : 'SALE';
+        }
+        const discountTag = hasDiscount ? `<span class="shop-badge-promo">${tagText}</span>` : '';
         const strikePrice = hasDiscount ? `<span class="shop-price-strike">${p.orig_price} Rs</span>` : '';
         const imgSrc = p.local_image || p.img_url;
 
