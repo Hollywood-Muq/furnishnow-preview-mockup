@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation — Furnish Now Mauritius</title>
+  
+  <!-- Clean Professional Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Custom Prototype CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    .conf-page-wrap {
+      padding: 30px 0 80px;
+      background: #ffffff;
+      min-height: 75vh;
+    }
+
+    .conf-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .conf-main-title {
+      font-size: 2.15rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+    }
+
+    /* Print Button matching Odoo screenshot */
+    .btn-odoo-print {
+      background: #6c757d;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .btn-odoo-print:hover {
+      background: #5a6268;
+      color: #ffffff;
+    }
+
+    /* Info Alert: Sign Up to follow order */
+    .follow-order-alert {
+      background: #e8f4f8;
+      border: 1px solid #d1ecf1;
+      border-radius: 8px;
+      padding: 14px 20px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: #0c5460;
+    }
+    .btn-signup-pill {
+      background: #8c939c;
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    .btn-signup-pill:hover {
+      background: #6c757d;
+      color: #ffffff;
+    }
+
+    /* Payment Information Section */
+    .conf-subheading {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+    .payment-method-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #111827;
+      margin-bottom: 14px;
+    }
+
+    /* Authentic Odoo Teal MCB Juice Banner matching screenshot 1:1 */
+    .mcb-teal-card {
+      background-color: #169db2; /* Exact color sampled from screenshot */
+      border-radius: 8px 8px 0 0;
+      padding: 24px 28px;
+      color: #ffffff;
+    }
+    .mcb-banner-heading {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: -0.2px;
+    }
+    .mcb-account-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .mcb-red-text {
+      color: #ff3333;
+      font-weight: 900;
+      font-size: 1.1rem;
+    }
+    .mcb-number-box {
+      background: #ffffff;
+      color: #0000ff;
+      font-family: monospace;
+      font-size: 1.25rem;
+      font-weight: 800;
+      padding: 3px 12px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+    .mcb-instruction-subtext {
+      font-size: 0.85rem;
+      font-weight: 700;
+      opacity: 0.95;
+      letter-spacing: 0.02em;
+    }
+
+    /* Lower strip for dynamic communication ref */
+    .mcb-comm-strip {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 14px 28px;
+      font-size: 0.95rem;
+      color: #1e293b;
+    }
+    .mcb-comm-val {
+      font-family: monospace;
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 1.05rem;
+      margin-left: 6px;
+    }
+
+    /* Right Summary Card with FIX for price going outside the card */
+    .order-sidebar-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px;
+      background: #ffffff;
+      position: sticky;
+      top: 90px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+    .sidebar-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .sidebar-item-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .sidebar-item-thumb {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 3px;
+      flex-shrink: 0;
+    }
+    .sidebar-item-desc {
+      flex: 1;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #1f2937;
+      line-height: 1.35;
+      padding-right: 8px;
+    }
+    .sidebar-item-price {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #111827;
+      text-align: right;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-width: 90px;
+    }
+
+    /* Totals Breakdown */
+    .summary-calc-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+      color: #4b5563;
+    }
+    .summary-calc-line.total-line {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    @media print {
+      .fn-navbar, .fn-footer, .fn-subfooter, .btn-odoo-print {
+        display: none !important;
+      }
+      .conf-page-wrap {
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================================
+       1. CLEAN GREY TRANSPARENT NAVBAR
+       ====================================================================== -->
+  <nav class="navbar navbar-expand-lg fn-navbar sticky-top">
+    <div class="container-fluid px-3 px-lg-5 flex-wrap">
+      
+      <a class="fn-brand-logo me-auto me-lg-4 me-xl-5" href="index.html">
+        <img src="assets/images/furnishnow_logo.png" alt="Furnish Now">
+      </a>
+
+      <!-- Mobile Fast Action Icons (Search Toggle, Cart Link with Badge, Hamburger) -->
+      <div class="d-flex align-items-center d-lg-none gap-2">
+        <button class="fn-circle-btn border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavSearchCollapse" aria-label="Toggle Search">
+          <i class="bi bi-search fs-5 text-dark"></i>
+        </button>
+        <a href="cart.html" class="fn-circle-btn position-relative text-decoration-none" title="Shopping Cart">
+          <i class="bi bi-cart3"></i>
+          <span class="cart-badge nav-cart-badge">0</span>
+        </a>
+        <button class="navbar-toggler border-0 shadow-none p-1" type="button" data-bs-toggle="collapse" data-bs-target="#furnishNav" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse order-3 order-lg-2" id="furnishNav">
+        <ul class="fn-nav-menu me-auto my-3 my-lg-0">
+          <li><a class="fn-nav-link" href="index.html">Home</a></li>
+          <li><a class="fn-nav-link" href="category.html">Shop</a></li>
+          <li><a class="fn-nav-link" href="about.html">About Us</a></li>
+        </ul>
+
+        <div class="fn-nav-actions my-2 my-lg-0">
+          <div class="fn-nav-search-wrap d-none d-lg-block">
+            <i class="bi bi-search fn-nav-search-icon"></i>
+            <input type="text" id="navbar-search-input" class="fn-nav-search-input navbar-search-field" placeholder="Search furniture...">
+          </div>
+
+          <a href="cart.html" class="fn-circle-btn text-decoration-none d-none d-lg-flex" title="Shopping Cart">
+            <i class="bi bi-cart3"></i>
+            <span class="cart-badge nav-cart-badge" id="nav-cart-badge">0</span>
+          </a>
+
+          <a href="#" class="btn-fn-signin">Sign in</a>
+          <a href="about.html" class="btn-fn-contact">Contact Us</a>
+        </div>
+      </div>
+
+      <!-- Mobile Expandable Search Row -->
+      <div class="collapse w-100 mt-2 order-2 order-lg-3 d-lg-none" id="mobileNavSearchCollapse">
+        <div class="mobile-search-input-box py-1">
+          <i class="bi bi-search"></i>
+          <input type="text" class="mobile-nav-search-field" placeholder="Search furniture, tables, chairs...">
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ======================================================================
+       2. ORDER CONFIRMATION PAGE (Exact 1:1 match of furnishnow.mu/shop/confirmation)
+       ====================================================================== -->
+  <main class="conf-page-wrap">
+    <div class="container-fluid px-4 px-lg-5">
+      
+      <!-- Top Title & Print Button -->
+      <div class="conf-header-row">
+        <h1 class="conf-main-title">Thank you for your order.</h1>
+        <button class="btn-odoo-print" onclick="window.print()">
+          <i class="bi bi-printer"></i> Print
+        </button>
+      </div>
+
+      <div class="row g-5">
+        
+        <!-- Left: Payment Information & MCB Juice Banner -->
+        <div class="col-lg-8">
+          
+          <!-- Notice: Sign Up to follow order -->
+          <div class="follow-order-alert">
+            <a href="#" class="btn-signup-pill">Sign Up</a>
+            <span>to follow your order.</span>
+          </div>
+
+          <!-- Section: Payment Information -->
+          <h3 class="conf-subheading">Payment Information</h3>
+
+          <div class="payment-method-header-row">
+            <span>MCB JUICE</span>
+            <span>Total: <span id="conf-display-total">0.00 Rs</span></span>
+          </div>
+
+          <!-- Exact Teal Blue Box from Furnish Now Odoo -->
+          <div class="mcb-teal-card">
+            <div class="mcb-banner-heading">
+              Please use the following MCB ACC NO FOR JUICE TRANSFER.
+            </div>
+
+            <div class="mcb-account-row">
+              <span class="mcb-red-text">MCB</span> ACCOUNT No : <span class="mcb-number-box">000449247171</span>
+            </div>
+
+            <div class="mcb-instruction-subtext">
+              PLEASE USE THE "COMMUNICATION" PROVIDED BELOW TO INCLUDE IN THE "JUICE DESCRIPTION".
+            </div>
+          </div>
+
+          <!-- Attached Bottom Strip: Dynamic Communication ID -->
+          <div class="mcb-comm-strip">
+            <strong>Communication:</strong> <span class="mcb-comm-val" id="conf-quotation-ref">S02391</span>
+          </div>
+
+          <!-- Back to Store Link -->
+          <div class="mt-4 pt-2">
+            <a href="index.html" class="btn btn-outline-dark px-4 py-2 rounded-3 text-decoration-none">
+              &larr; Return to Homepage
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Right: Order Summary with Cleaned-Up Non-Spill Pricing -->
+        <div class="col-lg-4">
+          <div class="order-sidebar-card">
+            
+            <!-- Products List -->
+            <div class="sidebar-items-list" id="sidebar-order-items">
+              <!-- Dynamically populated from cart -->
+            </div>
+
+            <!-- Breakdown -->
+            <div class="summary-calc-line">
+              <span>Delivery</span>
+              <span id="summary-delivery">300.00 Rs</span>
+            </div>
+
+            <div class="summary-calc-line">
+              <span>Subtotal</span>
+              <span id="summary-subtotal">0.00 Rs</span>
+            </div>
+
+            <div class="summary-calc-line">
+              <span>Taxes</span>
+              <span id="summary-taxes">0.00 Rs</span>
+            </div>
+
+            <div class="summary-calc-line total-line">
+              <span>Total</span>
+              <span id="summary-total">0.00 Rs</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="fn-footer">
+    <div class="container-fluid px-4 px-lg-5">
+      <div class="row gy-4">
+        <div class="col-md-3">
+          <h5>Useful Links</h5>
+          <ul class="list-unstyled d-flex flex-column gap-2 small">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="category.html">All Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://furnishnow.mu/terms" target="_blank">Legal / Terms & Conditions</a></li>
+          </ul>
+        </div>
+        <div class="col-md-5">
+          <h5>About us</h5>
+          <p class="small text-light opacity-75">
+            We are a team of passionate people whose goal is to improve everyone's life through disruptive products. Wealth of experience has shaped every aspect of our business.
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h5>Connect with us</h5>
+          <ul class="list-unstyled d-flex flex-column gap-2 small text-light opacity-75">
+            <li><i class="bi bi-telephone-fill me-2"></i> 5 282 15 35 / 5 277 9778</li>
+            <li><i class="bi bi-envelope-fill me-2"></i> info@furnishnow.mu</li>
+            <li><i class="bi bi-geo-alt-fill me-2"></i> Cassis, Port Louis, Mauritius</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="fn-subfooter">
+    <div class="container-fluid px-4 px-lg-5 d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>Copyright &copy; Furnish Now | Karayel Ltd</div>
+      <div>Powered by <strong>Odoo 19</strong> — Next-Gen eCommerce Architecture</div>
+    </div>
+  </div>
+
+  <script src="assets/js/products-data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let orderItems = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadConfirmationDetails();
+      initNavSearch();
+    });
+
+    function loadConfirmationDetails() {
+      // Retrieve or generate dynamic Odoo Quotation ID
+      let quotationId = localStorage.getItem('fn_last_order_id');
+      if (!quotationId) {
+        // Fallback dynamic ID generated like Odoo sales quotation
+        const randomDigits = Math.floor(10000 + Math.random() * 90000);
+        quotationId = 'S' + randomDigits;
+        localStorage.setItem('fn_last_order_id', quotationId);
+      }
+      document.getElementById('conf-quotation-ref').textContent = quotationId;
+
+      const saved = localStorage.getItem('fn_cart');
+      if (saved) {
+        try { orderItems = JSON.parse(saved); } catch(e) { orderItems = []; }
+      }
+
+      // If cart empty, load the exact items from the live screenshot:
+      // 1 x Dining Chair Noah [Ref: C-869-W] (LightGreen(ZJ024-19)) -> 1,450.00 Rs
+      // 1 x Celine Sofa Bed Ref: HM2034 -> 30,548.78 Rs
+      if (!orderItems || orderItems.length === 0) {
+        orderItems = [
+          {
+            id: 28,
+            title: "Dining Chair Noah [Ref: C-869-W] (LightGreen(ZJ024-19))",
+            price: "1,450.00",
+            local_image: "assets/images/categories/dining_chair.jpg",
+            qty: 1
+          },
+          {
+            id: 23,
+            title: "Celine Sofa Bed Ref: HM2034",
+            price: "30,548.78",
+            local_image: "assets/images/categories/sofa_bed.jpg",
+            qty: 1
+          }
+        ];
+      }
+
+      // Render items list inside sidebar
+      let itemsTotal = 0;
+      const listContainer = document.getElementById('sidebar-order-items');
+      if (listContainer) {
+        listContainer.innerHTML = orderItems.map(item => {
+          const itemPrice = parseFloat(String(item.price).replace(/,/g, '')) || 0;
+          const lineTotal = itemPrice * (item.qty || 1);
+          itemsTotal += lineTotal;
+
+          return `
+            <div class="sidebar-item-row">
+              <img src="${item.local_image || item.img_url || 'assets/images/categories/dining_chair.jpg'}" alt="${item.title}" class="sidebar-item-thumb">
+              <div class="sidebar-item-desc">
+                ${item.qty || 1} x ${item.title}
+              </div>
+              <div class="sidebar-item-price">
+                ${lineTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Rs
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const deliveryFee = 300.00;
+      const untaxedSubtotal = itemsTotal / 1.15;
+      const vatAmount = itemsTotal - untaxedSubtotal;
+      const grandTotal = itemsTotal + deliveryFee;
+
+      const formattedTotal = `${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Rs`;
+      document.getElementById('conf-display-total').textContent = formattedTotal;
+      document.getElementById('summary-subtotal').textContent = `${untaxedSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Rs`;
+      document.getElementById('summary-taxes').textContent = `${vatAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Rs`;
+      document.getElementById('summary-total').textContent = formattedTotal;
+    }
+
+    function initNavSearch() {
+      const inputs = document.querySelectorAll('#navbar-search-input, .navbar-search-field, .mobile-nav-search-field');
+      inputs.forEach(input => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const val = input.value.trim();
+            if (val) {
+              window.location.href = `category.html?search=${encodeURIComponent(val)}`;
+            }
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

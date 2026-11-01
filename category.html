@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Collections — Furnish Now Mauritius</title>
+  
+  <!-- Clean Professional Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Custom Prototype CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    .shop-page-wrapper {
+      padding: 30px 0 80px;
+      background: #fdfdfd;
+    }
+
+    /* Left Sidebar: Minimalist & Clean matching Odoo screenshot */
+    .shop-sidebar-panel {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 18px 14px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      position: sticky;
+      top: 85px;
+      max-height: calc(100vh - 110px);
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-heading {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f3f4f6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .cat-menu-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow-y: auto;
+      overscroll-behavior: contain; /* CRITICAL: Prevents scroll events from leaking to main page */
+      -webkit-overflow-scrolling: touch;
+      padding-right: 4px;
+      flex-grow: 1;
+    }
+    /* Silky-smooth custom scrollbar */
+    .cat-menu-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .cat-menu-list::-webkit-scrollbar-track {
+      background: #f8fafc;
+      border-radius: 4px;
+    }
+    .cat-menu-list::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .cat-menu-list::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .cat-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-radius: 6px;
+      color: #374151;
+      font-size: 0.885rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+      text-decoration: none;
+      user-select: none;
+    }
+    .cat-menu-item:hover {
+      background: #f3f4f6;
+      color: #111827;
+    }
+    .cat-menu-item.active {
+      background: #111827;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .cat-radio-circle {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 1.5px solid #9ca3af;
+      margin-right: 10px;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+    .cat-menu-item.active .cat-radio-circle {
+      border-color: #ffffff;
+      background: #2563eb;
+    }
+    .cat-item-count {
+      font-size: 0.75rem;
+      background: #f3f4f6;
+      color: #6b7280;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    .cat-menu-item.active .cat-item-count {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    /* Top Controls Bar */
+    .shop-header-controls {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .shop-search-box {
+      position: relative;
+      width: 320px;
+    }
+    .shop-search-box input {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 8px 14px 8px 36px;
+      font-size: 0.875rem;
+      outline: none;
+    }
+    .shop-search-box i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+    }
+
+    /* Product Cards in Grid: Strictly Sized & Proportional */
+    .shop-grid-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .shop-grid-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.07);
+      border-color: #cbd5e1;
+    }
+    .shop-card-img-wrap {
+      height: 220px;
+      width: 100%;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .shop-card-img-wrap img {
+      max-height: 190px;
+      max-width: 90%;
+      object-fit: contain;
+      transition: transform 0.35s ease;
+    }
+    .shop-grid-card:hover .shop-card-img-wrap img {
+      transform: scale(1.06);
+    }
+    
+    .btn-zoom-card {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      font-size: 0.85rem;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+    .shop-grid-card:hover .btn-zoom-card {
+      opacity: 1;
+    }
+    .btn-zoom-card:hover {
+      background: #111827;
+      color: #ffffff;
+    }
+
+    .shop-badge-promo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #ef4444;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .shop-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      border-top: 1px solid #f3f4f6;
+    }
+    .shop-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 6px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      height: 2.7em;
+    }
+    .shop-card-sku {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+    .shop-card-price-row {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .shop-price-main {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #111827;
+    }
+    .shop-price-strike {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      text-decoration: line-through;
+      margin-left: 6px;
+    }
+    .btn-buy-trigger {
+      background: #111827;
+      color: #ffffff;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-buy-trigger:hover {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .lightbox-modal.active {
+      display: flex;
+    }
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================================
+       1. CLEAN GREY TRANSPARENT NAVBAR (Fully Mobile Responsive)
+       ====================================================================== -->
+  <nav class="navbar navbar-expand-lg fn-navbar sticky-top">
+    <div class="container-fluid px-3 px-lg-5 flex-wrap">
+      
+      <!-- Authentic Furnish Now Logo -->
+      <a class="fn-brand-logo me-auto me-lg-4 me-xl-5" href="index.html">
+        <img src="assets/images/furnishnow_logo.png" alt="Furnish Now">
+      </a>
+
+      <!-- Mobile Fast Action Icons (Search Toggle, Cart Link with Badge, Hamburger) -->
+      <div class="d-flex align-items-center d-lg-none gap-2">
+        <button class="fn-circle-btn border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavSearchCollapse" aria-label="Toggle Search">
+          <i class="bi bi-search fs-5 text-dark"></i>
+        </button>
+        <a href="cart.html" class="fn-circle-btn position-relative text-decoration-none" title="Shopping Cart">
+          <i class="bi bi-cart3"></i>
+          <span class="cart-badge nav-cart-badge">0</span>
+        </a>
+        <button class="navbar-toggler border-0 shadow-none p-1" type="button" data-bs-toggle="collapse" data-bs-target="#furnishNav" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <!-- Spacious Nav Items -->
+      <div class="collapse navbar-collapse order-3 order-lg-2" id="furnishNav">
+        <ul class="fn-nav-menu me-auto my-3 my-lg-0">
+          <li><a class="fn-nav-link" href="index.html">Home</a></li>
+          <li><a class="fn-nav-link active" href="category.html">Shop</a></li>
+          <li><a class="fn-nav-link" href="about.html">About Us</a></li>
+        </ul>
+
+        <div class="fn-nav-actions my-2 my-lg-0">
+          <!-- Desktop Search Box -->
+          <div class="fn-nav-search-wrap d-none d-lg-block">
+            <i class="bi bi-search fn-nav-search-icon"></i>
+            <input type="text" id="navbar-search-input" class="fn-nav-search-input navbar-search-field" placeholder="Search furniture...">
+          </div>
+
+          <!-- Desktop Cart Icon -->
+          <a href="cart.html" class="fn-circle-btn text-decoration-none d-none d-lg-flex" title="Shopping Cart">
+            <i class="bi bi-cart3"></i>
+            <span class="cart-badge nav-cart-badge">0</span>
+          </a>
+
+          <a href="#" class="btn-fn-signin">Sign in</a>
+          <a href="index.html#contact-section" class="btn-fn-contact">Contact Us</a>
+        </div>
+      </div>
+
+      <!-- Mobile Expandable Search Bar -->
+      <div class="collapse w-100 mt-2 order-2 order-lg-3 d-lg-none" id="mobileNavSearchCollapse">
+        <div class="mobile-search-input-box py-1">
+          <i class="bi bi-search"></i>
+          <input type="text" class="mobile-nav-search-field" placeholder="Search furniture, tables, chairs..." onkeydown="handleNavSearch(event, this)">
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ======================================================================
+       2. MAIN CATEGORY SHOP LAYOUT
+       ====================================================================== -->
+  <main class="shop-page-wrapper">
+    <div class="container-fluid px-3 px-lg-5">
+      
+      <!-- Breadcrumbs -->
+      <nav class="mb-3 text-muted small">
+        <a href="index.html" class="text-dark fw-semibold text-decoration-none">Home</a> &nbsp;/&nbsp; 
+        <a href="category.html" class="text-dark text-decoration-none">Products</a> &nbsp;/&nbsp; 
+        <span id="breadcrumb-title" class="fw-bold text-dark">All Products</span>
+      </nav>
+
+      <!-- Swipeable Horizontal Category Pill Strip (Mobile & Tablet) -->
+      <div class="cat-pill-strip d-lg-none mb-3" id="mobile-category-pills">
+        <button class="cat-pill-btn active" data-pill-cat="All Products" onclick="setCategoryFilter('All Products')">All <span class="badge" id="pill-count-all">161</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Dining Table" onclick="setCategoryFilter('Dining Table')">Dining Table <span class="badge" data-cat-count="Dining Table">13</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Dining Chair" onclick="setCategoryFilter('Dining Chair')">Dining Chair <span class="badge" data-cat-count="Dining Chair">25</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Dining Set" onclick="setCategoryFilter('Dining Set')">Dining Set <span class="badge" data-cat-count="Dining Set">3</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Office Chair" onclick="setCategoryFilter('Office Chair')">Office Chair <span class="badge" data-cat-count="Office Chair">7</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Office Desk" onclick="setCategoryFilter('Office Desk')">Office Desk <span class="badge" data-cat-count="Office Desk">8</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Sofa Bed" onclick="setCategoryFilter('Sofa Bed')">Sofa Bed <span class="badge" data-cat-count="Sofa Bed">16</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Sofa Set" onclick="setCategoryFilter('Sofa Set')">Sofa Set <span class="badge" data-cat-count="Sofa Set">3</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Bar Stool" onclick="setCategoryFilter('Bar Stool')">Bar Stool <span class="badge" data-cat-count="Bar Stool">12</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Bamboo Furniture" onclick="setCategoryFilter('Bamboo Furniture')">Bamboo <span class="badge" data-cat-count="Bamboo Furniture">30</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Centre Table" onclick="setCategoryFilter('Centre Table')">Centre Table <span class="badge" data-cat-count="Centre Table">8</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Dressing Table" onclick="setCategoryFilter('Dressing Table')">Dressing Table <span class="badge" data-cat-count="Dressing Table">6</span></button>
+        <button class="cat-pill-btn" data-pill-cat="TV Console" onclick="setCategoryFilter('TV Console')">TV Console <span class="badge" data-cat-count="TV Console">4</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Wall Shelves" onclick="setCategoryFilter('Wall Shelves')">Wall Shelves <span class="badge" data-cat-count="Wall Shelves">4</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Bed" onclick="setCategoryFilter('Bed')">Bed <span class="badge" data-cat-count="Bed">9</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Plants" onclick="setCategoryFilter('Plants')">Plants &amp; Decor <span class="badge" data-cat-count="Plants">6</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Outdoor Furniture" onclick="setCategoryFilter('Outdoor Furniture')">Outdoor <span class="badge" data-cat-count="Outdoor Furniture">1</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Rugs" onclick="setCategoryFilter('Rugs')">Rugs <span class="badge" data-cat-count="Rugs">4</span></button>
+        <button class="cat-pill-btn" data-pill-cat="Bookshelf" onclick="setCategoryFilter('Bookshelf')">Bookshelf <span class="badge" data-cat-count="Bookshelf">4</span></button>
+      </div>
+
+      <!-- Mobile Dedicated Shop Controls (Search, Categories Drawer Trigger & Sort) -->
+      <div class="d-lg-none mb-3">
+        <!-- Direct Mobile Search Input -->
+        <div class="mobile-search-input-box mb-2">
+          <i class="bi bi-search"></i>
+          <input type="text" id="mobile-filter-search-box" placeholder="Search products in this category...">
+        </div>
+        
+        <!-- Filter Drawer Button & Sort Dropdown -->
+        <div class="d-flex align-items-center justify-content-between gap-2">
+          <button class="btn btn-outline-dark btn-sm rounded-3 d-flex align-items-center gap-2 px-3 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileCatOffcanvas" aria-controls="mobileCatOffcanvas">
+            <i class="bi bi-funnel"></i> <span>All Collections</span> <span class="badge bg-dark rounded-pill" id="mobile-filter-badge">18</span>
+          </button>
+
+          <div class="d-flex align-items-center gap-1">
+            <span class="small text-muted text-nowrap">Sort:</span>
+            <select id="mobile-sort-select-box" class="form-select form-select-sm rounded-3" style="width:145px;" onchange="applySorting(this.value)">
+              <option value="newest">Newest Arrivals</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name: A-Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        
+        <!-- Desktop Left Sidebar: Clean Categories List matching Screenshot (Hidden on mobile) -->
+        <aside class="d-none d-lg-block col-lg-3">
+          <div class="shop-sidebar-panel">
+            <div class="sidebar-heading">
+              <span>Categories</span>
+              <span class="text-muted small fw-normal">18 Collections</span>
+            </div>
+
+            <ul class="cat-menu-list" id="sidebar-categories">
+              <li>
+                <div class="cat-menu-item active" onclick="setCategoryFilter('All Products')">
+                  <span class="d-flex align-items-center">
+                    <span class="cat-radio-circle"></span> All Products
+                  </span>
+                  <span class="cat-item-count" id="count-all-badge">161</span>
+                </div>
+              </li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Dining Table')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Dining Table</span><span class="cat-item-count" data-cat-count="Dining Table">13</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Dining Chair')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Dining Chair</span><span class="cat-item-count" data-cat-count="Dining Chair">25</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Dining Set')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Dining Set</span><span class="cat-item-count" data-cat-count="Dining Set">3</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Office Chair')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Office Chair</span><span class="cat-item-count" data-cat-count="Office Chair">7</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Office Desk')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Office Desk</span><span class="cat-item-count" data-cat-count="Office Desk">8</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Sofa Bed')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Sofa Bed</span><span class="cat-item-count" data-cat-count="Sofa Bed">16</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Sofa Set')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Sofa Set</span><span class="cat-item-count" data-cat-count="Sofa Set">3</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Bar Stool')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Bar Stool</span><span class="cat-item-count" data-cat-count="Bar Stool">12</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Bamboo Furniture')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Bamboo Furniture</span><span class="cat-item-count" data-cat-count="Bamboo Furniture">30</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Dressing Table')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Dressing Table</span><span class="cat-item-count" data-cat-count="Dressing Table">6</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Centre Table')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Centre Table</span><span class="cat-item-count" data-cat-count="Centre Table">8</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('TV Console')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> TV Console</span><span class="cat-item-count" data-cat-count="TV Console">4</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Wall Shelves')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Wall Shelves</span><span class="cat-item-count" data-cat-count="Wall Shelves">4</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Bed')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Bed</span><span class="cat-item-count" data-cat-count="Bed">9</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Plants')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Plants & Decor</span><span class="cat-item-count" data-cat-count="Plants">6</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Outdoor Furniture')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Outdoor Furniture</span><span class="cat-item-count" data-cat-count="Outdoor Furniture">1</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Rugs')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Rugs</span><span class="cat-item-count" data-cat-count="Rugs">4</span></div></li>
+              <li><div class="cat-menu-item" onclick="setCategoryFilter('Bookshelf')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Bookshelf</span><span class="cat-item-count" data-cat-count="Bookshelf">4</span></div></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Right Column: Products Grid -->
+        <section class="col-12 col-lg-9">
+          
+          <!-- Desktop Controls Bar (Hidden on mobile) -->
+          <div class="shop-header-controls d-none d-lg-flex">
+            <div class="shop-search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" id="filter-search-box" placeholder="Search this category...">
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted small" id="results-count-text">Showing products</span>
+              
+              <div class="d-flex align-items-center gap-2">
+                <span class="small text-muted text-nowrap">Sort By:</span>
+                <select id="sort-select-box" class="form-select form-select-sm" style="width:160px;" onchange="applySorting(this.value)">
+                  <option value="newest">Newest Arrivals</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="name">Name: A-Z</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Cards Grid: 2 Columns on Mobile, 3 Columns on Desktop -->
+          <div class="row g-2 g-md-4" id="products-catalog-grid">
+            <!-- Rendered by JS -->
+          </div>
+
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Slide-in Offcanvas Drawer for Collections on Mobile -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileCatOffcanvas" aria-labelledby="mobileCatOffcanvasLabel">
+    <div class="offcanvas-header border-bottom">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-grid-fill text-dark fs-5"></i>
+        <h5 class="offcanvas-title fw-bold" id="mobileCatOffcanvasLabel">Browse Collections</h5>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-3">
+      <p class="text-muted small mb-3">Tap any collection to filter products:</p>
+      <ul class="cat-menu-list" id="offcanvas-categories-list">
+        <li>
+          <div class="cat-menu-item active" onclick="setCategoryFilter('All Products')">
+            <span class="d-flex align-items-center">
+              <span class="cat-radio-circle"></span> All Products
+            </span>
+            <span class="cat-item-count" id="drawer-count-all-badge">161</span>
+          </div>
+        </li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Dining Table')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Dining Table</span><span class="cat-item-count" data-cat-count="Dining Table">13</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Dining Chair')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Dining Chair</span><span class="cat-item-count" data-cat-count="Dining Chair">25</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Dining Set')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Dining Set</span><span class="cat-item-count" data-cat-count="Dining Set">3</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Office Chair')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Office Chair</span><span class="cat-item-count" data-cat-count="Office Chair">7</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Office Desk')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Office Desk</span><span class="cat-item-count" data-cat-count="Office Desk">8</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Sofa Bed')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Sofa Bed</span><span class="cat-item-count" data-cat-count="Sofa Bed">16</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Sofa Set')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Sofa Set</span><span class="cat-item-count" data-cat-count="Sofa Set">3</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Bar Stool')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Bar Stool</span><span class="cat-item-count" data-cat-count="Bar Stool">12</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Bamboo Furniture')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Bamboo Furniture</span><span class="cat-item-count" data-cat-count="Bamboo Furniture">30</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Dressing Table')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Dressing Table</span><span class="cat-item-count" data-cat-count="Dressing Table">6</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Centre Table')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Centre Table</span><span class="cat-item-count" data-cat-count="Centre Table">8</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('TV Console')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> TV Console</span><span class="cat-item-count" data-cat-count="TV Console">4</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Wall Shelves')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Wall Shelves</span><span class="cat-item-count" data-cat-count="Wall Shelves">4</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Bed')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Bed</span><span class="cat-item-count" data-cat-count="Bed">9</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Plants')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Plants & Decor</span><span class="cat-item-count" data-cat-count="Plants">6</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Outdoor Furniture')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Outdoor Furniture</span><span class="cat-item-count" data-cat-count="Outdoor Furniture">1</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Rugs')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Rugs</span><span class="cat-item-count" data-cat-count="Rugs">4</span></div></li>
+        <li><div class="cat-menu-item" onclick="setCategoryFilter('Bookshelf')"><span class="d-flex align-items-center"><span class="cat-radio-circle"></span> Bookshelf</span><span class="cat-item-count" data-cat-count="Bookshelf">4</span></div></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- Fullscreen Zoom Lightbox -->
+  <div class="lightbox-modal" id="shopLightbox" onclick="closeShopLightbox()">
+    <img id="shopLightboxImg" src="" alt="Enlarged view" class="lightbox-img">
+  </div>
+
+  <!-- ======================================================================
+       3. FOOTER
+       ====================================================================== -->
+  <footer class="fn-footer" id="contact-section">
+    <div class="container-fluid px-4 px-lg-5">
+      <div class="row gy-4">
+        <div class="col-md-3">
+          <h5>Useful Links</h5>
+          <ul class="list-unstyled d-flex flex-column gap-2 small">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="category.html">All Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="cart.html">Shopping Cart</a></li>
+            <li><a href="https://furnishnow.mu/terms" target="_blank">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        <div class="col-md-5">
+          <h5>About us</h5>
+          <p class="small text-light opacity-75">
+            We are a team of passionate people whose goal is to improve everyone's life through disruptive products. Wealth of experience has shaped every aspect of our business.
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h5>Connect with us</h5>
+          <ul class="list-unstyled d-flex flex-column gap-2 small text-light opacity-75">
+            <li><i class="bi bi-telephone-fill me-2"></i> 5 282 15 35 / 5 277 9778</li>
+            <li><i class="bi bi-envelope-fill me-2"></i> info@furnishnow.mu</li>
+            <li><i class="bi bi-geo-alt-fill me-2"></i> Cassis, Port Louis, Mauritius</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="fn-subfooter">
+    <div class="container-fluid px-4 px-lg-5 d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>Copyright &copy; Furnish Now | Karayel Ltd</div>
+      <div>Powered by <strong>Odoo 19</strong> — Next-Gen eCommerce Architecture</div>
+    </div>
+  </div>
+
+  <!-- JavaScript Data & Logic -->
+  <script src="assets/js/products-data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    let activeCat = 'All Products';
+    let currentItems = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initNavCartBadge();
+      initNavbarSearch();
+
+      const all = window.FURNISH_PRODUCTS || [];
+      const totalCount = all.length;
+      if (document.getElementById('count-all-badge')) document.getElementById('count-all-badge').textContent = totalCount;
+      if (document.getElementById('drawer-count-all-badge')) document.getElementById('drawer-count-all-badge').textContent = totalCount;
+      if (document.getElementById('pill-count-all')) document.getElementById('pill-count-all').textContent = totalCount;
+
+      // Update badge counts across sidebar, drawer & mobile pills
+      document.querySelectorAll('[data-cat-count]').forEach(el => {
+        const cat = el.getAttribute('data-cat-count');
+        const count = all.filter(p => p.category && p.category.toLowerCase() === cat.toLowerCase()).length;
+        el.textContent = count;
+      });
+
+      // Check URL parameters for ?cat= or ?search=
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('cat');
+      const searchParam = urlParams.get('search');
+
+      if (searchParam) {
+        performSearch(searchParam);
+      } else if (catParam) {
+        setCategoryFilter(catParam);
+      } else {
+        setCategoryFilter('All Products');
+      }
+
+      // Smooth mouse wheel delegation on desktop sidebar
+      const sidebarPanel = document.querySelector('.shop-sidebar-panel');
+      const catList = document.getElementById('sidebar-categories');
+      if (sidebarPanel && catList) {
+        sidebarPanel.addEventListener('wheel', (e) => {
+          if (catList.scrollHeight > catList.clientHeight) {
+            catList.scrollTop += e.deltaY;
+            e.preventDefault();
+          }
+        }, { passive: false });
+      }
+
+      // Desktop & Mobile In-page search listeners with two-way sync
+      const searchBoxDesktop = document.getElementById('filter-search-box');
+      const searchBoxMobile = document.getElementById('mobile-filter-search-box');
+
+      function handleSearchInput(val) {
+        val = val.toLowerCase().trim();
+        if (searchBoxDesktop && searchBoxDesktop.value !== val) searchBoxDesktop.value = val;
+        if (searchBoxMobile && searchBoxMobile.value !== val) searchBoxMobile.value = val;
+
+        if (!val) {
+          applySorting();
+        } else {
+          const filtered = currentItems.filter(p => 
+            p.title.toLowerCase().includes(val) || 
+            (p.category && p.category.toLowerCase().includes(val)) ||
+            (p.tags && p.tags.some(t => t.toLowerCase().includes(val)))
+          );
+          renderGrid(filtered);
+        }
+      }
+
+      if (searchBoxDesktop) {
+        searchBoxDesktop.addEventListener('input', (e) => handleSearchInput(e.target.value));
+      }
+      if (searchBoxMobile) {
+        searchBoxMobile.addEventListener('input', (e) => handleSearchInput(e.target.value));
+      }
+    });
+
+    function setCategoryFilter(categoryName) {
+      activeCat = categoryName;
+
+      // 1. Sync Desktop Sidebar
+      document.querySelectorAll('#sidebar-categories .cat-menu-item').forEach(m => {
+        if (m.textContent.trim().toLowerCase().startsWith(categoryName.toLowerCase())) {
+          m.classList.add('active');
+        } else {
+          m.classList.remove('active');
+        }
+      });
+
+      // 2. Sync Mobile Offcanvas Drawer
+      document.querySelectorAll('#offcanvas-categories-list .cat-menu-item').forEach(m => {
+        if (m.textContent.trim().toLowerCase().startsWith(categoryName.toLowerCase())) {
+          m.classList.add('active');
+        } else {
+          m.classList.remove('active');
+        }
+      });
+
+      // 3. Sync Mobile Horizontal Pills
+      document.querySelectorAll('.cat-pill-btn').forEach(pill => {
+        const pillCat = pill.getAttribute('data-pill-cat');
+        if (pillCat && pillCat.toLowerCase() === categoryName.toLowerCase()) {
+          pill.classList.add('active');
+          pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        } else {
+          pill.classList.remove('active');
+        }
+      });
+
+      // 4. Update Titles & Mobile Badge
+      const breadcrumb = document.getElementById('breadcrumb-title');
+      if (breadcrumb) breadcrumb.textContent = categoryName;
+      
+      const mobileBadge = document.getElementById('mobile-filter-badge');
+      if (mobileBadge) {
+        mobileBadge.textContent = categoryName === 'All Products' ? '18' : 'Filtered';
+      }
+
+      // 5. Close Mobile Offcanvas if open
+      const offcanvasEl = document.getElementById('mobileCatOffcanvas');
+      if (offcanvasEl) {
+        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+        if (bsOffcanvas) bsOffcanvas.hide();
+      }
+
+      // 6. Filter Products
+      const all = window.FURNISH_PRODUCTS || [];
+      if (categoryName === 'All Products') {
+        currentItems = [...all];
+      } else {
+        currentItems = all.filter(p => p.category && p.category.toLowerCase().includes(categoryName.toLowerCase()));
+      }
+
+      applySorting();
+
+      // Smooth scroll back to top of products catalog
+      const shopContent = document.querySelector('.shop-page-wrapper');
+      if (shopContent) {
+        const rect = shopContent.getBoundingClientRect();
+        if (rect.top < 60) {
+          window.scrollTo({
+            top: window.pageYOffset + rect.top - 80,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+
+    function performSearch(query) {
+      const all = window.FURNISH_PRODUCTS || [];
+      const q = query.toLowerCase().trim();
+      document.getElementById('breadcrumb-title').textContent = `Search results for "${query}"`;
+      
+      document.querySelectorAll('.cat-menu-item, .cat-pill-btn').forEach(m => m.classList.remove('active'));
+      
+      currentItems = all.filter(p => 
+        p.title.toLowerCase().includes(q) || 
+        (p.category && p.category.toLowerCase().includes(q)) ||
+        (p.tags && p.tags.some(t => t.toLowerCase().includes(q)))
+      );
+      
+      const searchBoxDesktop = document.getElementById('filter-search-box');
+      const searchBoxMobile = document.getElementById('mobile-filter-search-box');
+      if (searchBoxDesktop) searchBoxDesktop.value = query;
+      if (searchBoxMobile) searchBoxMobile.value = query;
+
+      applySorting();
+    }
+
+    function applySorting(optValue) {
+      const desktopSort = document.getElementById('sort-select-box');
+      const mobileSort = document.getElementById('mobile-sort-select-box');
+
+      const s = optValue || (desktopSort ? desktopSort.value : 'newest');
+      if (desktopSort && desktopSort.value !== s) desktopSort.value = s;
+      if (mobileSort && mobileSort.value !== s) mobileSort.value = s;
+
+      if (s === 'price-low') {
+        currentItems.sort((a, b) => parseFloat(a.price.replace(/,/g, '')) - parseFloat(b.price.replace(/,/g, '')));
+      } else if (s === 'price-high') {
+        currentItems.sort((a, b) => parseFloat(b.price.replace(/,/g, '')) - parseFloat(a.price.replace(/,/g, '')));
+      } else if (s === 'name') {
+        currentItems.sort((a, b) => a.title.localeCompare(b.title));
+      }
+      renderGrid(currentItems);
+    }
+
+    function renderGrid(items) {
+      const container = document.getElementById('products-catalog-grid');
+      const countText = document.getElementById('results-count-text');
+      if (countText) countText.textContent = `Showing ${items.length} products`;
+
+      if (!container) return;
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="col-12 text-center py-5">
+            <i class="bi bi-box2 fs-1 text-muted d-block mb-3"></i>
+            <h5 class="fw-bold">No products found</h5>
+            <p class="text-muted small">Try searching another term or choose a collection from the filter.</p>
+            <button class="btn btn-dark btn-sm rounded-pill px-4" onclick="setCategoryFilter('All Products')">Browse All Products</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = items.map(p => {
+        const hasDiscount = p.orig_price && p.orig_price !== p.price;
+        const discountTag = hasDiscount ? `<span class="shop-badge-promo">${p.discount_tag || 'PROMO'}</span>` : '';
+        const strikePrice = hasDiscount ? `<span class="shop-price-strike">${p.orig_price} Rs</span>` : '';
+        const imgSrc = p.local_image || p.img_url;
+
+        return `
+          <div class="col-6 col-md-4 col-lg-4">
+            <div class="shop-grid-card">
+              <div class="shop-card-img-wrap">
+                ${discountTag}
+                <button type="button" class="btn-zoom-card" onclick="openShopZoom('${imgSrc}')" title="Zoom in on picture">
+                  <i class="bi bi-zoom-in"></i>
+                </button>
+                <a href="product.html?id=${p.id}" class="d-flex align-items-center justify-content-center w-100 h-100 text-decoration-none">
+                  <img src="${imgSrc}" alt="${p.title}" loading="lazy">
+                </a>
+              </div>
+              <div class="shop-card-body">
+                <a href="product.html?id=${p.id}" class="text-decoration-none">
+                  <h6 class="shop-card-title" title="${p.title}">${p.title}</h6>
+                </a>
+                <div class="shop-card-sku">Ref: FN-${String(p.id).padStart(4, '0')}</div>
+                <div class="shop-card-price-row">
+                  <div>
+                    <span class="shop-price-main">${p.price} Rs</span>
+                    ${strikePrice}
+                  </div>
+                  <a href="product.html?id=${p.id}" class="btn-buy-trigger text-decoration-none">
+                    View &amp; Buy &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openShopZoom(imgSrc) {
+      const modal = document.getElementById('shopLightbox');
+      document.getElementById('shopLightboxImg').src = imgSrc;
+      modal.classList.add('active');
+    }
+
+    function closeShopLightbox() {
+      document.getElementById('shopLightbox').classList.remove('active');
+    }
+
+    function initNavCartBadge() {
+      const saved = localStorage.getItem('fn_cart');
+      if (saved) {
+        try {
+          const items = JSON.parse(saved);
+          const totalQty = items.reduce((acc, i) => acc + i.qty, 0);
+          document.querySelectorAll('.cart-badge, .nav-cart-badge').forEach(badge => {
+            badge.textContent = totalQty;
+          });
+        } catch(e) {}
+      }
+    }
+
+    function initNavbarSearch() {
+      const inputs = document.querySelectorAll('.navbar-search-field, .mobile-nav-search-field, #navbar-search-input');
+      inputs.forEach(input => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const query = input.value.trim();
+            if (query) {
+              performSearch(query);
+            }
+          }
+        });
+      });
+    }
+
+    function handleNavSearch(e, input) {
+      if (e.key === 'Enter') {
+        const query = input.value.trim();
+        if (query) {
+          performSearch(query);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

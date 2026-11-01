@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Address — Furnish Now Mauritius</title>
+  
+  <!-- Clean Professional Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Custom Prototype CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    .address-page-wrap {
+      padding: 30px 0 90px;
+      background: #ffffff;
+      min-height: 75vh;
+    }
+
+    /* Checkout Stepper matching Furnish Now Odoo */
+    .checkout-stepper {
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      color: #9ca3af;
+      font-weight: 500;
+    }
+    .checkout-stepper a {
+      color: #374151;
+      text-decoration: none;
+    }
+    .checkout-stepper a:hover {
+      text-decoration: underline;
+    }
+    .checkout-stepper .step-active {
+      color: #111827;
+      font-weight: 700;
+    }
+    .checkout-stepper .step-separator {
+      margin: 0 10px;
+      color: #d1d5db;
+    }
+
+    .address-page-title {
+      font-size: 2.15rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 30px;
+    }
+    .address-page-title a {
+      color: #111827;
+      text-decoration: none;
+    }
+    .address-page-title a:hover {
+      text-decoration: underline;
+    }
+
+    /* Form Inputs matching screenshot */
+    .address-form-container {
+      max-width: 820px;
+    }
+    .address-form-container .form-label {
+      font-size: 0.9rem;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+    .address-input {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      height: 42px;
+      font-size: 0.92rem;
+      color: #111827;
+      box-shadow: none;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .address-input:focus {
+      border-color: #111827;
+      box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+    }
+    .form-select.address-input {
+      height: 42px;
+    }
+
+    /* Buttons */
+    .btn-discard {
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      color: #111827;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-discard:hover {
+      background: #f3f4f6;
+      color: #111827;
+    }
+    .btn-continue-checkout {
+      background: #8c939c; /* Exact grey from screenshot */
+      border: none;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 9px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-continue-checkout:hover {
+      background: #6b7280;
+    }
+
+    /* Toggle Switch */
+    .form-switch .form-check-input {
+      width: 2.25em;
+      height: 1.25em;
+      cursor: pointer;
+    }
+    .form-switch .form-check-input:checked {
+      background-color: #8c939c;
+      border-color: #8c939c;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================================
+       1. CLEAN GREY TRANSPARENT NAVBAR (Home, Shop, About Us)
+       ====================================================================== -->
+  <nav class="navbar navbar-expand-lg fn-navbar sticky-top">
+    <div class="container-fluid px-3 px-lg-5 flex-wrap">
+      
+      <a class="fn-brand-logo me-auto me-lg-4 me-xl-5" href="index.html">
+        <img src="assets/images/furnishnow_logo.png" alt="Furnish Now">
+      </a>
+
+      <!-- Mobile Fast Action Icons (Search Toggle, Cart Link with Badge, Hamburger) -->
+      <div class="d-flex align-items-center d-lg-none gap-2">
+        <button class="fn-circle-btn border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavSearchCollapse" aria-label="Toggle Search">
+          <i class="bi bi-search fs-5 text-dark"></i>
+        </button>
+        <a href="cart.html" class="fn-circle-btn position-relative text-decoration-none" title="Shopping Cart">
+          <i class="bi bi-cart3"></i>
+          <span class="cart-badge nav-cart-badge">0</span>
+        </a>
+        <button class="navbar-toggler border-0 shadow-none p-1" type="button" data-bs-toggle="collapse" data-bs-target="#furnishNav" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse order-3 order-lg-2" id="furnishNav">
+        <ul class="fn-nav-menu me-auto my-3 my-lg-0">
+          <li><a class="fn-nav-link" href="index.html">Home</a></li>
+          <li><a class="fn-nav-link" href="category.html">Shop</a></li>
+          <li><a class="fn-nav-link" href="about.html">About Us</a></li>
+        </ul>
+
+        <div class="fn-nav-actions my-2 my-lg-0">
+          <div class="fn-nav-search-wrap d-none d-lg-block">
+            <i class="bi bi-search fn-nav-search-icon"></i>
+            <input type="text" id="navbar-search-input" class="fn-nav-search-input navbar-search-field" placeholder="Search furniture...">
+          </div>
+
+          <a href="cart.html" class="fn-circle-btn text-decoration-none d-none d-lg-flex" title="Shopping Cart">
+            <i class="bi bi-cart3"></i>
+            <span class="cart-badge nav-cart-badge" id="nav-cart-badge">0</span>
+          </a>
+
+          <a href="#" class="btn-fn-signin">Sign in</a>
+          <a href="about.html" class="btn-fn-contact">Contact Us</a>
+        </div>
+      </div>
+
+      <!-- Mobile Expandable Search Row -->
+      <div class="collapse w-100 mt-2 order-2 order-lg-3 d-lg-none" id="mobileNavSearchCollapse">
+        <div class="mobile-search-input-box py-1">
+          <i class="bi bi-search"></i>
+          <input type="text" class="mobile-nav-search-field" placeholder="Search furniture, tables, chairs...">
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ======================================================================
+       2. SHIPPING ADDRESS PAGE (Exact 1:1 match of furnishnow.mu/shop/address)
+       ====================================================================== -->
+  <main class="address-page-wrap">
+    <div class="container-fluid px-4 px-lg-5">
+      
+      <!-- Stepper: Review Order > Shipping > Payment -->
+      <div class="checkout-stepper">
+        <a href="cart.html">Review Order</a>
+        <span class="step-separator">&gt;</span>
+        <span class="step-active">Shipping</span>
+        <span class="step-separator">&gt;</span>
+        <span>Payment</span>
+      </div>
+
+      <!-- Title: Fill in your address or Sign in -->
+      <h1 class="address-page-title">
+        Fill in your address <span class="text-muted fw-normal fs-4">or</span> <a href="#">Sign in</a>
+      </h1>
+
+      <div class="address-form-container">
+        
+        <form id="addressForm" class="needs-validation" novalidate onsubmit="handleAddressSubmit(event)">
+          
+          <!-- Full name -->
+          <div class="mb-3">
+            <label class="form-label" for="full_name">Full name</label>
+            <input type="text" class="form-control address-input" id="full_name" required>
+            <div class="invalid-feedback">Please enter your full name.</div>
+          </div>
+
+          <!-- Email & Phone -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label" for="email">Email</label>
+              <input type="email" class="form-control address-input" id="email" required>
+              <div class="invalid-feedback">Please provide a valid email address.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="phone">Phone</label>
+              <input type="tel" class="form-control address-input" id="phone" required placeholder="5XXX XXXX">
+              <div class="invalid-feedback">Please provide your contact phone number.</div>
+            </div>
+          </div>
+
+          <!-- Company Name & VAT -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label" for="company_name">Company Name</label>
+              <input type="text" class="form-control address-input" id="company_name">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="vat">VAT</label>
+              <input type="text" class="form-control address-input" id="vat">
+            </div>
+          </div>
+
+          <!-- Street and Number -->
+          <div class="mb-3">
+            <label class="form-label" for="street">Street and Number</label>
+            <input type="text" class="form-control address-input" id="street" required>
+            <div class="invalid-feedback">Please enter your street address and number.</div>
+          </div>
+
+          <!-- Apartment, suite, etc. -->
+          <div class="mb-3">
+            <label class="form-label" for="street2">Apartment, suite, etc.</label>
+            <input type="text" class="form-control address-input" id="street2">
+          </div>
+
+          <!-- City & Zip Code -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-7">
+              <label class="form-label" for="city">City</label>
+              <input type="text" class="form-control address-input" id="city" required>
+              <div class="invalid-feedback">Please enter your city.</div>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label" for="zip">Zip Code</label>
+              <input type="text" class="form-control address-input" id="zip">
+            </div>
+          </div>
+
+          <!-- Country -->
+          <div class="mb-4">
+            <label class="form-label" for="country">Country</label>
+            <select class="form-select address-input" id="country" required>
+              <option value="">Country...</option>
+              <option value="Mauritius" selected>Mauritius</option>
+            </select>
+            <div class="invalid-feedback">Please select your country.</div>
+          </div>
+
+          <!-- Switch: Ship to the same address -->
+          <div class="form-check form-switch mb-5">
+            <input class="form-check-input" type="checkbox" role="switch" id="shipToSameAddress" checked>
+            <label class="form-check-label text-secondary" for="shipToSameAddress">Ship to the same address</label>
+          </div>
+
+          <!-- Actions: Discard & Continue checkout -->
+          <div class="d-flex justify-content-between align-items-center pt-2">
+            <a href="cart.html" class="btn-discard">&lt; Discard</a>
+            <button type="submit" class="btn-continue-checkout" id="btn-submit-address">
+              Continue checkout &gt;
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="fn-footer">
+    <div class="container-fluid px-4 px-lg-5">
+      <div class="row gy-4">
+        <div class="col-md-3">
+          <h5>Useful Links</h5>
+          <ul class="list-unstyled d-flex flex-column gap-2 small">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="category.html">All Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://furnishnow.mu/terms" target="_blank">Legal / Terms & Conditions</a></li>
+          </ul>
+        </div>
+        <div class="col-md-5">
+          <h5>About us</h5>
+          <p class="small text-light opacity-75">
+            We are a team of passionate people whose goal is to improve everyone's life through disruptive products. Wealth of experience has shaped every aspect of our business.
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h5>Connect with us</h5>
+          <ul class="list-unstyled d-flex flex-column gap-2 small text-light opacity-75">
+            <li><i class="bi bi-telephone-fill me-2"></i> 5 282 15 35 / 5 277 9778</li>
+            <li><i class="bi bi-envelope-fill me-2"></i> info@furnishnow.mu</li>
+            <li><i class="bi bi-geo-alt-fill me-2"></i> Cassis, Port Louis, Mauritius</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="fn-subfooter">
+    <div class="container-fluid px-4 px-lg-5 d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>Copyright &copy; Furnish Now | Karayel Ltd</div>
+      <div>Powered by <strong>Odoo 19</strong> — Next-Gen eCommerce Architecture</div>
+    </div>
+  </div>
+
+  <script src="assets/js/products-data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Sync cart badge
+      const saved = localStorage.getItem('fn_cart');
+      if (saved) {
+        try {
+          const cart = JSON.parse(saved);
+          const totalQty = cart.reduce((s, i) => s + (i.qty || 1), 0);
+          document.querySelectorAll('.cart-badge, .nav-cart-badge, #nav-cart-badge').forEach(b => b.textContent = totalQty);
+        } catch(e) {}
+      }
+
+      // Pre-fill previously entered address or defaults matching screenshot
+      const savedAddress = localStorage.getItem('fn_shipping_address');
+      if (savedAddress) {
+        document.getElementById('street').value = savedAddress.split(',')[0] || '';
+      } else {
+        document.getElementById('full_name').value = 'Muqtadir';
+        document.getElementById('email').value = 'muqtadir@furnishnow.mu';
+        document.getElementById('phone').value = '52821535';
+        document.getElementById('street').value = 'Rt des pamplemouss';
+        document.getElementById('city').value = 'Port Louis';
+        document.getElementById('zip').value = '11301';
+      }
+
+      initNavSearch();
+    });
+
+    function handleAddressSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('addressForm');
+      
+      // Bootstrap native validation
+      if (!form.checkValidity()) {
+        e.stopPropagation();
+        form.classList.add('was-validated');
+        return;
+      }
+
+      const fullName = document.getElementById('full_name').value.trim();
+      const street = document.getElementById('street').value.trim();
+      const street2 = document.getElementById('street2').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const zip = document.getElementById('zip').value.trim();
+      const country = document.getElementById('country').value.trim();
+
+      let parts = [street];
+      if (street2) parts.push(street2);
+      if (city) parts.push(city);
+      if (zip) parts.push(zip);
+      if (country) parts.push(country);
+
+      const formattedAddress = parts.join(', ');
+      localStorage.setItem('fn_shipping_address', formattedAddress);
+      localStorage.setItem('fn_shipping_name', fullName);
+
+      // Navigate to payment
+      window.location.href = 'payment.html';
+    }
+
+    function initNavSearch() {
+      const inputs = document.querySelectorAll('#navbar-search-input, .navbar-search-field, .mobile-nav-search-field');
+      inputs.forEach(input => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const val = input.value.trim();
+            if (val) {
+              window.location.href = `category.html?search=${encodeURIComponent(val)}`;
+            }
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

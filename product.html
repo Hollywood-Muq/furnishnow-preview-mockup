@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details — Furnish Now Mauritius</title>
+  
+  <!-- Clean Professional Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Custom Prototype CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    .product-page-container {
+      padding: 30px 0 80px;
+      background: #ffffff;
+    }
+    
+    .product-breadcrumbs {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+    .product-breadcrumbs a {
+      color: #111827;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .product-breadcrumbs a:hover {
+      text-decoration: underline;
+    }
+
+    /* Product Showcase Gallery with Interactive Zoom */
+    .product-gallery-box {
+      background: #ffffff;
+      border: 1px solid var(--fn-border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 420px;
+      position: relative;
+      cursor: zoom-in;
+      overflow: hidden;
+    }
+    .product-main-img {
+      max-height: 380px;
+      max-width: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    .product-gallery-box:hover .product-main-img {
+      transform: scale(1.15); /* Smooth on-hover zoom inspection */
+    }
+    .zoom-hint-badge {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(17, 24, 39, 0.7);
+      color: #ffffff;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    /* Product Details Column */
+    .product-main-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+    .product-sku-tag {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 20px;
+    }
+    
+    .product-pricing-box {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--fn-border);
+    }
+    .product-current-price {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #111827;
+    }
+    .product-orig-price {
+      font-size: 1.2rem;
+      color: #ef4444;
+      text-decoration: line-through;
+      margin-left: 12px;
+      font-weight: 600;
+    }
+    .vat-tag {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-left: 8px;
+    }
+
+    /* Variants Selectors: Sizes & Colors */
+    .variant-section-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .variant-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .btn-variant-pill {
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 7px 16px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-variant-pill:hover {
+      border-color: #111827;
+    }
+    .btn-variant-pill.active {
+      background: #111827;
+      color: #ffffff;
+      border-color: #111827;
+    }
+
+    /* Quantity Controls */
+    .quantity-control-group {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+      height: 46px;
+    }
+    .btn-qty-step {
+      width: 40px;
+      height: 100%;
+      border: none;
+      background: transparent;
+      color: #111827;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .btn-qty-step:hover {
+      background: #f3f4f6;
+    }
+    .input-qty-number {
+      width: 48px;
+      height: 100%;
+      border: none;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #111827;
+      outline: none;
+    }
+
+    /* Add to Cart Button matching Furnish Now Screenshot */
+    .btn-add-main {
+      height: 46px;
+      background: #8c939c; /* Exact Furnish Now grey button */
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-add-main:hover {
+      background: #6b7280;
+      color: #ffffff;
+    }
+
+    /* Lightbox Modal for Full Zoom */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+    .lightbox-modal.active {
+      display: flex;
+    }
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================================
+       1. CLEAN GREY TRANSPARENT NAVBAR
+       ====================================================================== -->
+  <nav class="navbar navbar-expand-lg fn-navbar sticky-top">
+    <div class="container-fluid px-3 px-lg-5 flex-wrap">
+      
+      <a class="fn-brand-logo me-auto me-lg-4 me-xl-5" href="index.html">
+        <img src="assets/images/furnishnow_logo.png" alt="Furnish Now">
+      </a>
+
+      <!-- Mobile Fast Action Icons (Search Toggle, Cart Link with Badge, Hamburger) -->
+      <div class="d-flex align-items-center d-lg-none gap-2">
+        <button class="fn-circle-btn border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavSearchCollapse" aria-label="Toggle Search">
+          <i class="bi bi-search fs-5 text-dark"></i>
+        </button>
+        <a href="cart.html" class="fn-circle-btn position-relative text-decoration-none" title="Shopping Cart">
+          <i class="bi bi-cart3"></i>
+          <span class="cart-badge nav-cart-badge">0</span>
+        </a>
+        <button class="navbar-toggler border-0 shadow-none p-1" type="button" data-bs-toggle="collapse" data-bs-target="#furnishNav" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse order-3 order-lg-2" id="furnishNav">
+        <ul class="fn-nav-menu me-auto my-3 my-lg-0">
+          <li><a class="fn-nav-link" href="index.html">Home</a></li>
+          <li><a class="fn-nav-link active" href="category.html">Shop</a></li>
+          <li><a class="fn-nav-link" href="about.html">About Us</a></li>
+        </ul>
+
+        <div class="fn-nav-actions my-2 my-lg-0">
+          <div class="fn-nav-search-wrap d-none d-lg-block">
+            <i class="bi bi-search fn-nav-search-icon"></i>
+            <input type="text" id="navbar-search-input" class="fn-nav-search-input navbar-search-field" placeholder="Search furniture...">
+          </div>
+
+          <a href="cart.html" class="fn-circle-btn text-decoration-none d-none d-lg-flex" title="Shopping Cart">
+            <i class="bi bi-cart3"></i>
+            <span class="cart-badge nav-cart-badge" id="nav-cart-badge">0</span>
+          </a>
+
+          <a href="#" class="btn-fn-signin">Sign in</a>
+          <a href="index.html#contact-section" class="btn-fn-contact">Contact Us</a>
+        </div>
+      </div>
+
+      <!-- Mobile Expandable Search Row -->
+      <div class="collapse w-100 mt-2 order-2 order-lg-3 d-lg-none" id="mobileNavSearchCollapse">
+        <div class="mobile-search-input-box py-1">
+          <i class="bi bi-search"></i>
+          <input type="text" class="mobile-nav-search-field" placeholder="Search furniture, tables, chairs...">
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ======================================================================
+       2. PRODUCT DETAIL VIEW
+       ====================================================================== -->
+  <main class="product-page-container">
+    <div class="container-fluid px-4 px-lg-5">
+      
+      <!-- Breadcrumbs -->
+      <div class="product-breadcrumbs">
+        <a href="index.html">All Products</a> &nbsp;/&nbsp; 
+        <a href="category.html" id="breadcrumb-cat-link">Category</a> &nbsp;/&nbsp; 
+        <span id="breadcrumb-product-name" class="text-dark fw-bold">Product</span>
+      </div>
+
+      <div class="row g-5">
+        
+        <!-- Left: Product Image with Hover & Click Zoom -->
+        <div class="col-lg-6">
+          <div class="product-gallery-box" onclick="openLightbox()" title="Click to open full zoom">
+            <img id="detail-main-img" src="" alt="Product Photo" class="product-main-img">
+            <span class="zoom-hint-badge"><i class="bi bi-zoom-in me-1"></i>Hover to inspect / Click to enlarge</span>
+          </div>
+        </div>
+
+        <!-- Right: Details, Variant Options & Buy Button -->
+        <div class="col-lg-6">
+          <div>
+            
+            <h1 class="product-main-title" id="detail-title">Loading Product Title...</h1>
+            <div class="product-sku-tag"><i class="bi bi-tag me-1"></i> <span id="detail-sku">Ref: FN-0001</span></div>
+
+            <!-- Price Row -->
+            <div class="product-pricing-box">
+              <span class="product-current-price" id="detail-price">0.00 Rs</span>
+              <span class="product-orig-price" id="detail-orig-price" style="display:none;"></span>
+              <span class="vat-tag">VAT Included</span>
+            </div>
+
+            <!-- Variant Option 1: Sizes / Dimensions (For tables, desks, rugs) -->
+            <div id="size-variant-container" style="display:none;">
+              <div class="variant-section-title">Select Dimensions / Size:</div>
+              <div class="variant-pills-row" id="size-pills-list"></div>
+            </div>
+
+            <!-- Variant Option 2: Colors / Finishes -->
+            <div id="color-variant-container" style="display:none;">
+              <div class="variant-section-title">Select Color / Finish:</div>
+              <div class="variant-pills-row" id="color-pills-list"></div>
+            </div>
+
+            <!-- Quantity & Add to Cart -->
+            <div class="d-flex align-items-center gap-3 flex-wrap my-4">
+              
+              <!-- Quantity Selector -->
+              <div class="quantity-control-group">
+                <button class="btn-qty-step" type="button" onclick="adjustProductQty(-1)">-</button>
+                <input type="text" id="product-qty-input" class="input-qty-number" value="1" readonly>
+                <button class="btn-qty-step" type="button" onclick="adjustProductQty(1)">+</button>
+              </div>
+
+              <!-- Main Add to Cart Button (Redirects to cart.html) -->
+              <button class="btn-add-main" id="btn-add-to-cart-action">
+                <i class="bi bi-cart-fill"></i> Add to cart
+              </button>
+            </div>
+
+            <!-- Authentic Delivery Terms (Matching Original Furnish Now Screenshot) -->
+            <div class="p-3 bg-light rounded-3 border text-muted small mt-4">
+              <div class="mb-2"><i class="bi bi-truck me-2 text-dark"></i><strong>Delivery:</strong> Standard home delivery across Mauritius (300.00 Rs).</div>
+              <div class="mb-2"><i class="bi bi-geo-alt me-2 text-dark"></i><strong>Warehouse Pickup:</strong> Available at Cassis, Port Louis.</div>
+              <div><i class="bi bi-credit-card me-2 text-dark"></i><strong>Payment Method:</strong> MCB Juice transfer upon quotation confirmation.</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Fullscreen Lightbox Zoom Modal -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Zoomed Furniture View" class="lightbox-img">
+  </div>
+
+  <!-- ======================================================================
+       3. FOOTER
+       ====================================================================== -->
+  <footer class="fn-footer" id="contact-section">
+    <div class="container-fluid px-4 px-lg-5">
+      <div class="row gy-4">
+        <div class="col-md-3">
+          <h5>Useful Links</h5>
+          <ul class="list-unstyled d-flex flex-column gap-2 small">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="category.html">All Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="cart.html">Shopping Cart</a></li>
+            <li><a href="https://furnishnow.mu/terms" target="_blank">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        <div class="col-md-5">
+          <h5>About us</h5>
+          <p class="small text-light opacity-75">
+            We are a team of passionate people whose goal is to improve everyone's life through disruptive products. Wealth of experience has shaped every aspect of our business.
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h5>Connect with us</h5>
+          <ul class="list-unstyled d-flex flex-column gap-2 small text-light opacity-75">
+            <li><i class="bi bi-telephone-fill me-2"></i> 5 282 15 35 / 5 277 9778</li>
+            <li><i class="bi bi-envelope-fill me-2"></i> info@furnishnow.mu</li>
+            <li><i class="bi bi-geo-alt-fill me-2"></i> Cassis, Port Louis, Mauritius</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="fn-subfooter">
+    <div class="container-fluid px-4 px-lg-5 d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>Copyright &copy; Furnish Now | Karayel Ltd</div>
+      <div>Powered by <strong>Odoo 19</strong> — Next-Gen eCommerce Architecture</div>
+    </div>
+  </div>
+
+  <!-- JavaScript Data -->
+  <script src="assets/js/products-data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    let currentProduct = null;
+    let selectedQuantity = 1;
+    let selectedSize = '';
+    let selectedColor = '';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initNavCartBadge();
+      initNavSearch();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const prodId = parseInt(urlParams.get('id')) || 31; // Default to Dining Table Slate if unspecified
+      
+      const allItems = window.FURNISH_PRODUCTS || [];
+      currentProduct = allItems.find(p => p.id === prodId) || allItems[0];
+
+      if (currentProduct) {
+        document.title = `${currentProduct.title} — Furnish Now`;
+        document.getElementById('breadcrumb-product-name').textContent = currentProduct.title;
+        document.getElementById('breadcrumb-cat-link').textContent = currentProduct.category || 'All Products';
+        document.getElementById('breadcrumb-cat-link').href = `category.html?cat=${encodeURIComponent(currentProduct.category || 'All Products')}`;
+
+        document.getElementById('detail-title').textContent = currentProduct.title;
+        document.getElementById('detail-sku').textContent = `Ref: FN-${String(currentProduct.id).padStart(4, '0')}`;
+        document.getElementById('detail-price').textContent = `${currentProduct.price} Rs`;
+        
+        const mainImg = document.getElementById('detail-main-img');
+        mainImg.src = currentProduct.local_image || currentProduct.img_url;
+
+        // Discount
+        if (currentProduct.orig_price && currentProduct.orig_price !== currentProduct.price) {
+          const origEl = document.getElementById('detail-orig-price');
+          origEl.textContent = `${currentProduct.orig_price} Rs`;
+          origEl.style.display = 'inline';
+        }
+
+        // Render Sizes Selector if available
+        if (currentProduct.sizes && currentProduct.sizes.length > 0) {
+          selectedSize = currentProduct.sizes[0];
+          const sizeContainer = document.getElementById('size-variant-container');
+          const sizeList = document.getElementById('size-pills-list');
+          sizeContainer.style.display = 'block';
+          sizeList.innerHTML = currentProduct.sizes.map((s, idx) => `
+            <button type="button" class="btn-variant-pill ${idx === 0 ? 'active' : ''}" onclick="selectSize('${s}', this)">${s}</button>
+          `).join('');
+        }
+
+        // Render Colors Selector if available
+        if (currentProduct.colors && currentProduct.colors.length > 0) {
+          selectedColor = currentProduct.colors[0];
+          const colorContainer = document.getElementById('color-variant-container');
+          const colorList = document.getElementById('color-pills-list');
+          colorContainer.style.display = 'block';
+          colorList.innerHTML = currentProduct.colors.map((c, idx) => `
+            <button type="button" class="btn-variant-pill ${idx === 0 ? 'active' : ''}" onclick="selectColor('${c}', this)">${c}</button>
+          `).join('');
+        }
+
+        updateConfiguredTitle();
+
+        // Add to Cart Action -> Adds to cart and redirects directly to cart.html
+        document.getElementById('btn-add-to-cart-action').addEventListener('click', () => {
+          addProductToCartAndRedirect();
+        });
+      }
+    });
+
+    function selectSize(size, el) {
+      selectedSize = size;
+      document.querySelectorAll('#size-pills-list .btn-variant-pill').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      updateConfiguredTitle();
+    }
+
+    function selectColor(color, el) {
+      selectedColor = color;
+      document.querySelectorAll('#color-pills-list .btn-variant-pill').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      updateConfiguredTitle();
+    }
+
+    function updateConfiguredTitle() {
+      if (!currentProduct) return;
+      let variantText = [];
+      if (selectedColor) variantText.push(selectedColor);
+      if (selectedSize) variantText.push(selectedSize);
+
+      let fullTitle = currentProduct.title;
+      if (variantText.length > 0) {
+        fullTitle += ` (${variantText.join(', ')})`;
+      }
+      document.getElementById('detail-title').textContent = fullTitle;
+    }
+
+    function adjustProductQty(delta) {
+      selectedQuantity += delta;
+      if (selectedQuantity < 1) selectedQuantity = 1;
+      document.getElementById('product-qty-input').value = selectedQuantity;
+    }
+
+    function addProductToCartAndRedirect() {
+      if (!currentProduct) return;
+      
+      let variantText = [];
+      if (selectedColor) variantText.push(selectedColor);
+      if (selectedSize) variantText.push(selectedSize);
+
+      let finalTitle = currentProduct.title;
+      if (variantText.length > 0) {
+        finalTitle += ` (${variantText.join(', ')})`;
+      }
+
+      // Load existing cart
+      let cart = [];
+      const saved = localStorage.getItem('fn_cart');
+      if (saved) {
+        try { cart = JSON.parse(saved); } catch(e) { cart = []; }
+      }
+
+      // Check if same item with same variant already in cart
+      const existing = cart.find(i => i.title === finalTitle);
+      if (existing) {
+        existing.qty += selectedQuantity;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          title: finalTitle,
+          price: currentProduct.price,
+          local_image: currentProduct.local_image || currentProduct.img_url,
+          qty: selectedQuantity
+        });
+      }
+
+      localStorage.setItem('fn_cart', JSON.stringify(cart));
+      
+      // Redirect to the dedicated cart page
+      window.location.href = 'cart.html';
+    }
+
+    function openLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      const img = document.getElementById('lightboxImg');
+      img.src = document.getElementById('detail-main-img').src;
+      modal.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').classList.remove('active');
+    }
+
+    function initNavCartBadge() {
+      const saved = localStorage.getItem('fn_cart');
+      if (saved) {
+        try {
+          const items = JSON.parse(saved);
+          const totalQty = items.reduce((acc, i) => acc + i.qty, 0);
+          document.querySelectorAll('.cart-badge, .nav-cart-badge, #nav-cart-badge').forEach(badge => {
+            badge.textContent = totalQty;
+          });
+        } catch(e) {}
+      }
+    }
+
+    function initNavSearch() {
+      const inputs = document.querySelectorAll('#navbar-search-input, .navbar-search-field, .mobile-nav-search-field');
+      inputs.forEach(input => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const query = input.value.trim();
+            if (query) {
+              window.location.href = `category.html?search=${encodeURIComponent(query)}`;
+            }
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
